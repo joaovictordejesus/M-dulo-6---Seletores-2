@@ -1,1 +1,138 @@
+   <!-- João Victor de Jesus Augusto -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+            width: 300px;
+        }
+
+        button {
+            padding: 5px 15px;
+            font-size: 14px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .tarefas {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .tarefa {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tarefa input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .concluida {
+            text-decoration: line-through;
+            color: green;
+        }
+
+        .nao-concluida {
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Tarefas</h1>
+
+    <!-- Campo de texto da nova tarefa -->
+    <input type="text" id="descricao" placeholder="Digite a descrição da tarefa">
+    <button onclick="adicionarTarefa()">Adicionar</button>
+
+    <!-- Lista de tarefas -->
+    <div class="tarefas" id="listaTarefas">
+        <!-- Tarefas serão adicionadas aqui dinamicamente -->
+    </div>
+
+    <script>
+        const tarefas = [];
+
+        // Adicionar uma nova tarefa
+        function adicionarTarefa() {
+            const descricaoInput = document.getElementById("descricao");
+            const descricao = descricaoInput.value.trim();
+
+            if (descricao === "") {
+                alert("Por favor, digite uma descrição para a tarefa!");
+                return;
+            }
+
+            // Adicionar a nova tarefa ao array com status inicial "não concluído"
+            tarefas.push({ descricao, status: false });
+
+            // Limpar o campo de texto
+            descricaoInput.value = "";
+
+            // Atualizar a lista de tarefas 
+            atualizarListaTarefas();
+        }
+
+        // Atualizar a lista de tarefas exibida
+        function atualizarListaTarefas() {
+            const listaTarefas = document.getElementById("listaTarefas");
+
+            // Limpar a lista antes de re-renderizá-la
+            listaTarefas.innerHTML = "";
+
+            // Renderizar cada tarefa
+            tarefas.forEach((tarefa, index) => {
+                const tarefaDiv = document.createElement("div");
+                tarefaDiv.className = "tarefa";
+
+                // Criar o checkbox para alterar o status
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = tarefa.status;
+                checkbox.onchange = () => alterarStatus(index);
+
+                // Criação da descrição da tarefa
+                const descricao = document.createElement("span");
+                descricao.innerText = tarefa.descricao;
+                descricao.className = tarefa.status ? "concluida" : "nao-concluida";
+
+                // Adicionar elementos ao div da tarefa
+                tarefaDiv.appendChild(checkbox);
+                tarefaDiv.appendChild(descricao);
+
+                // Adicionar o div da tarefa à lista de tarefas
+                listaTarefas.appendChild(tarefaDiv);
+            });
+        }
+
+        // Função para alterar o status de uma tarefa
+        function alterarStatus(index) {
+            // Alternar o status da tarefa no array
+            tarefas[index].status = !tarefas[index].status;
+
+            // Atualizar a lista de tarefas na interface
+            atualizarListaTarefas();
+        }
+    </script>
+
+</body>
+</html>
 
